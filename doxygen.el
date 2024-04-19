@@ -118,7 +118,7 @@ and long sections."
 (defun dump-arguments (arglist)
   "Insert a comment with the Doxygen comments for a function."
   (mapcar (function (lambda (x)
-                      (insert (format "///  \\param %s\t\n"
+                      (insert (format "/// \\param %s\t\n"
                                       (extract-argument-name x)))))
           arglist))
 
