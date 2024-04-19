@@ -44,14 +44,14 @@
 and long sections."
   (interactive "*")
   (beginning-of-line)
-  (save-excursion 
+  (save-excursion
     (save-restriction
       (widen)
       (let ((start (point)))
-        (insert (concat "//! \n"
-                        "/*!\n"
-                        "  \n"
-                        "*/\n"))
+        (insert (concat "/// \n"
+                        "///\n"
+                        "/// \n"
+                        "///\n"))
         (let ((end (point)))
           (indent-region start end nil)))))
   (end-of-line))
@@ -64,15 +64,12 @@ and long sections."
                      "untitled"))
         (date-string (format-time-string doxygen-date-format))
         (who (user-full-name)))
-    (insert (format (concat "/*!\n"
-                            "  \\file   %s\n"
-                            "  \\brief  \n"
-                            "\n"
-                            "  <long description>\n"
-                            "\n"  
-                            "  \\author %s\n"
-                            "  \\date   %s\n"
-                            "*/\n")
+    (insert (format (concat "/// \\file   %s\n"
+                            "///\n"
+                            "/// \\brief  \n"
+                            "///\n"
+                            "/// \\author %s\n"
+                            "/// \\date   %s\n")
                     file-name who date-string))))
 
 
@@ -80,20 +77,17 @@ and long sections."
   "Insert a Doxygen comment for the function at point."
   (interactive "*")
   (beginning-of-line)
-  (save-excursion 
+  (save-excursion
     (save-restriction
       (widen)
       (let ((start (point)))
         (let ((args (find-arg-list)))
-          (insert (concat "//! \n"
-                          "/*!\n"
-                          "  <long-description>\n"
-                          "\n"))
+          (insert (concat "/// \brief \n"
+                          "///\n"))
           (when (cdr (assoc 'args args))
             (dump-arguments (cdr (assoc 'args args))))
           (unless (string= "void" (cdr (assoc 'return args)))
-            (insert "  \\return <ReturnValue>\n"))
-          (insert "*/\n"))
+            (insert "  \\return <ReturnValue>\n")))
         (let ((end (point)))
           (indent-region start end nil)
           (untabify start end)))))
@@ -114,7 +108,7 @@ and long sections."
 (defun doxygen-insert-compound-comment ()
   "Insert a compound comment."
   (interactive "*")
-  (let ((comment-start "//!< ")
+  (let ((comment-start "///< ")
         (comment-end ""))
     (indent-for-comment)))
 
@@ -124,7 +118,7 @@ and long sections."
 (defun dump-arguments (arglist)
   "Insert a comment with the Doxygen comments for a function."
   (mapcar (function (lambda (x)
-                      (insert (format "  \\param %s\t\n"
+                      (insert (format "///  \\param %s\t\n"
                                       (extract-argument-name x)))))
           arglist))
 
@@ -144,7 +138,7 @@ and long sections."
       (search-forward "(")
       (let ((bound (point)))
         (goto-char start)
-        (if (re-search-forward 
+        (if (re-search-forward
              (concat
               "\\(virtual \|static \|const \\)*" ; opt. modifiers
               "\\([a-zA-Z0-9_:*]+\\)\\s-+[a-zA-Z0-9_:*]+\\s-*(") ; return type
@@ -152,7 +146,7 @@ and long sections."
             (buffer-substring (match-beginning 2)(match-end 2))
           "void")
         ))))
-        
+
 (defun find-arg-list ()
   "Extract various bits of information from a C or C++ function declaration"
   (interactive "*")
