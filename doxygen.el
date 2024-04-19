@@ -51,7 +51,7 @@ and long sections."
         (insert (concat "/// \n"
                         "///\n"
                         "/// \n"
-                        "///\n"))
+                        "///"))
         (let ((end (point)))
           (indent-region start end nil)))))
   (end-of-line))
@@ -69,7 +69,7 @@ and long sections."
                             "/// \\brief  \n"
                             "///\n"
                             "/// \\author %s\n"
-                            "/// \\date   %s\n")
+                            "/// \\date   %s")
                     file-name who date-string))))
 
 
@@ -87,7 +87,7 @@ and long sections."
           (when (cdr (assoc 'args args))
             (dump-arguments (cdr (assoc 'args args))))
           (unless (string= "void" (cdr (assoc 'return args)))
-            (insert "  \\return <ReturnValue>\n")))
+            (insert "/// \\return <ReturnValue>")))
         (let ((end (point)))
           (indent-region start end nil)
           (untabify start end)))))
