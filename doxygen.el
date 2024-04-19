@@ -82,7 +82,7 @@ and long sections."
       (widen)
       (let ((start (point)))
         (let ((args (find-arg-list)))
-          (insert (concat "/// \brief \n"
+          (insert (concat "/// \\brief \n"
                           "///\n"))
           (when (cdr (assoc 'args args))
             (dump-arguments (cdr (assoc 'args args))))
